@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Timer</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
+
+    <style>
+      body {
+        background-color: #000;
+        height: 100%;
+        font-family: 'Archivo Black';
+        padding: 0;
+        font-size: 25vw;
+        color: #fff;
+      }
+      .started .button {
+        display: none;
+      }
+      .button {
+        font-size: 25vw;
+        color: #fff;
+        background: none;
+        border: 0;
+        cursor: pointer;
+      }
+      .button:hover {
+        color: pink;
+      }
+      .container {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        justify-content: center;
+      }
+    </style>
+
+    <script src="/howler.min.js"></script>
+
+    <script type="text/javascript">
+      var startSeconds = 10;
+
+      var blip = new Howl({
+        src: ['/blip.mp3']
+      });
+
+      var beep = new Howl({
+        src: ['/beep.mp3']
+      });
+
+      function setTime(seconds) {
+        var s = seconds % 60;
+        s = ('0' + s).slice(-2);
+        var m = Math.floor(seconds / 60)
+        var output = m + ':' + s;
+
+        document.getElementById('timer').textContent = output;
+      }
+
+      function start() {
+        document.body.className += ' ' + 'started';
+        var timeleft = startSeconds;
+        setTime(timeleft);
+
+        var downloadTimer = setInterval(function () {
+          timeleft --;
+          setTime(timeleft)
+
+          if (timeleft <= 3 && timeleft > 0) {
+            blip.play();
+          }
+
+          if (timeleft <= 0) {
+            timeleft = startSeconds + 1;
+            beep.play();
+          }
+        }, 1000);
+      }
+
+      // document.addEventListener('DOMContentLoaded', start);
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <button class="button" onclick="start()">GO</button>
+
+      <div class="timer" id="timer"></div>
+    </div>
+  </body>
+
+</html>
