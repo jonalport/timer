@@ -20,20 +20,37 @@
         font-family: 'Archivo Black';
         padding: 0;
         font-size: 25vw;
-        color: #fff;
+        color: #84c4f0;
+      }
+      .logo {
+        display: none;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 150px;
+        height: auto;
+        cursor: pointer;
       }
       .started .button {
         display: none;
       }
+      .started .logo {
+        display: inline-block;
+      }
       .button {
-        font-size: 25vw;
-        color: #fff;
-        background: none;
-        border: 0;
+        /* font-size: 25vw; */
+        /* color: #fff; */
+        /* background: none; */
+        /* border: 0; */
         cursor: pointer;
+        opacity: 0.75;
+        transition: 300ms ease-in-out opacity;
+        width: 300px;
+        height: auto;
       }
       .button:hover {
-        color: pink;
+        /* color: pink; */
+        opacity: 1;
       }
       .container {
         position: absolute;
@@ -95,7 +112,9 @@
 
   <body>
     <div class="container">
-      <button class="button" onclick="start()">GO</button>
+      <img class="button" onclick="start()" src="logo.jpg">
+
+      <img class="logo" src="logo.jpg" id="logo" onclick="location.reload()">
 
       <div class="timer" id="timer"></div>
     </div>
