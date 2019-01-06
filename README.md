@@ -2,4 +2,4 @@
 
 With beeps at the end!
 
-(https://jonalport.github.io/timer/)
+[Run it](https://jonalport.github.io/timer/)
