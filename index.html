@@ -19,15 +19,20 @@
         height: 100%;
         font-family: 'Archivo Black';
         padding: 0;
-        font-size: 25vw;
+        font-size: 32vw;
         color: #84c4f0;
+        transition: background-color 250ms ease-in-out;
+      }
+      body.resting {
+        background-color: #f00;
+        color: #000;
       }
       .logo {
         display: none;
         position: absolute;
         top: 20px;
         right: 20px;
-        width: 150px;
+        width: 24vw;
         height: auto;
         cursor: pointer;
       }
@@ -68,6 +73,7 @@
 
     <script type="text/javascript">
       var startSeconds = 180;
+      var restSeconds = 30;
 
       var blip = new Howl({
         src: ['blip.mp3']
@@ -78,43 +84,58 @@
       });
 
       function setTime(seconds) {
-        var s = seconds % 60;
+        var displaySeconds = seconds;
+        
+        if (seconds > restSeconds) {
+          displaySeconds = seconds - restSeconds;
+        }
+        
+        var s = displaySeconds % 60;
         s = ('0' + s).slice(-2);
-        var m = Math.floor(seconds / 60)
+        var m = Math.floor(displaySeconds / 60)
         var output = m + ':' + s;
+
+        if (seconds === restSeconds) {
+          document.getElementById('body').classList.add('resting');
+        }
+
+        if (seconds === 0) {
+          document.getElementById('body').classList.remove('resting');
+        }
+
+        if (displaySeconds <= 3 && displaySeconds > 0) {
+            blip.play();
+        }
+
+        if (displaySeconds === 0) {
+          beep.play();
+        }
 
         document.getElementById('timer').textContent = output;
       }
 
       function start() {
-        document.body.className += ' ' + 'started';
-        var timeleft = startSeconds;
+        document.getElementById('body').classList.add('started');
+        var timeleft = startSeconds + restSeconds;
         setTime(timeleft);
 
         var downloadTimer = setInterval(function () {
           timeleft --;
           setTime(timeleft)
 
-          if (timeleft <= 3 && timeleft > 0) {
-            blip.play();
-          }
-
-          if (timeleft <= 0) {
-            timeleft = startSeconds + 1;
-            beep.play();
+          if (timeleft === 0) {
+            timeleft = startSeconds + restSeconds + 1;
           }
         }, 1000);
       }
-
-      // document.addEventListener('DOMContentLoaded', start);
     </script>
   </head>
 
-  <body>
+  <body id="body">
     <div class="container">
-      <img class="button" onclick="start()" src="logo.jpg">
+      <img class="button" onclick="start()" src="logo.png">
 
-      <img class="logo" src="logo.jpg" id="logo" onclick="location.reload()">
+      <img class="logo" src="logo.png" id="logo" onclick="location.reload()">
 
       <div class="timer" id="timer"></div>
     </div>
