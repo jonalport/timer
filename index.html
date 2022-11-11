@@ -19,9 +19,11 @@
         height: 100%;
         font-family: 'Archivo Black';
         padding: 0;
-        font-size: 32vw;
         color: #84c4f0;
         transition: background-color 250ms ease-in-out;
+      }
+      .timer {
+        font-size: 32vw;
       }
       body.resting {
         background-color: #f00;
@@ -43,18 +45,13 @@
         display: inline-block;
       }
       .button {
-        /* font-size: 25vw; */
-        /* color: #fff; */
-        /* background: none; */
-        /* border: 0; */
         cursor: pointer;
         opacity: 0.75;
         transition: 300ms ease-in-out opacity;
-        width: 300px;
+        width: 24vw;
         height: auto;
       }
       .button:hover {
-        /* color: pink; */
         opacity: 1;
       }
       .container {
@@ -66,14 +63,28 @@
         left: 0px;
         right: 0px;
         justify-content: center;
+        flex-direction: column;
+      }
+      #p {
+        margin-top: 4vh;
+        color: #fff;
+        opacity: 0.6;
+        font-size: 1vw;
+      }
+      .started #p {
+        display: none;
       }
     </style>
 
     <script src="howler.min.js"></script>
 
     <script type="text/javascript">
-      var startSeconds = 180;
-      var restSeconds = 30;
+      const urlParams = new URLSearchParams(window.location.search);
+      const secs = urlParams.get('work');
+      const rest = urlParams.get('rest');
+
+      var startSeconds = secs ? parseInt(secs) : 180;
+      var restSeconds = rest ? parseInt(rest) : 30;
 
       var blip = new Howl({
         src: ['blip.mp3']
@@ -85,11 +96,11 @@
 
       function setTime(seconds) {
         var displaySeconds = seconds;
-        
+
         if (seconds > restSeconds) {
           displaySeconds = seconds - restSeconds;
         }
-        
+
         var s = displaySeconds % 60;
         s = ('0' + s).slice(-2);
         var m = Math.floor(displaySeconds / 60)
@@ -128,6 +139,12 @@
           }
         }, 1000);
       }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log({ startSeconds });
+        const el = document.getElementById('p');
+        el.innerHTML = `work ${startSeconds} rest ${restSeconds}`;
+      });
     </script>
   </head>
 
@@ -136,6 +153,8 @@
       <img class="button" onclick="start()" src="logo.png">
 
       <img class="logo" src="logo.png" id="logo" onclick="location.reload()">
+
+      <p id="p">work</p>
 
       <div class="timer" id="timer"></div>
     </div>
